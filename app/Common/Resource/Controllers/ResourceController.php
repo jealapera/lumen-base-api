@@ -41,7 +41,7 @@ class ResourceController extends BaseController
 	 * @return array
 	 */
 	public function index(Request $request)
-	{   
+	{
 		$perPage = $request->get('per_page');
         $response = ($perPage) ? $this->service()->paginate($perPage) : $this->service()->getAll();
 
