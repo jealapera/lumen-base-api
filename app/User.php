@@ -32,4 +32,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    /**
+     * The rules for the validation of the given data.
+     *
+     * @var array
+     */
+    public $rules = [
+        'name' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed'
+    ];
+
+    /**
+     * @param $password
+     * @return string
+     */
+    public function encryptPassword($password)
+    {
+        return app('hash')->make($password);
+    }
 }

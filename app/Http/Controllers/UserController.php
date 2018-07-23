@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Common\Resource\Controllers\ResourceController;
-use App\Common\Traits\HashTrait;
 use App\Http\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -12,8 +11,6 @@ use Illuminate\Http\Request;
  */
 class UserController extends ResourceController
 {
-	use HashTrait;
-
 	/**
 	 * @return UserService
 	 */
@@ -30,8 +27,16 @@ class UserController extends ResourceController
     public function store(Request $request)
     {
     	$requestData = $request->all();
-    	$requestData['password'] = $this->encrypt($requestData['password']);
+    	
+        if($validator = $this->validateRequest($requestData, $this->service()->model()->rules))
+        {   
+            return $this->validationError($validator);
+        }
+        else
+        {
+            $requestData['password'] = $this->service()->model()->encryptPassword($requestData['password']);
 
-    	return $this->success($this->service()->create($requestData));
+            return $this->success($this->service()->create($requestData));
+        }
     }
 }

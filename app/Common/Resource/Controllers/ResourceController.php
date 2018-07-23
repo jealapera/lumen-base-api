@@ -4,6 +4,7 @@ namespace App\Common\Resource\Controllers;
 
 use App\Common\Resource\Services\ResourceService;
 use App\Common\Traits\APIResponse;
+use App\Common\Traits\RequestValidator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
@@ -14,7 +15,7 @@ use Laravel\Lumen\Routing\Controller as BaseController;
  */
 class ResourceController extends BaseController
 {
-	use APIResponse;
+	use APIResponse, RequestValidator;
 
 	/**
 	 * @return ResourceService
