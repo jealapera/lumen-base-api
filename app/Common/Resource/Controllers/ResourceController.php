@@ -55,7 +55,7 @@ class ResourceController extends BaseController
 	 * @param $id
 	 * @return mixed
 	 */
-	public function getById($id)
+	public function show($id)
 	{   
 		if(!$data = $this->service()->getById($id))
         {

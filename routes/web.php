@@ -20,7 +20,7 @@ $router->group(['prefix' => 'admin'], function() use($router) {
     // Users
     $router->post('users', 'UserController@store');
     $router->get('users', 'UserController@index');
-    $router->get('users/{id}', 'UserController@getById');
+    $router->get('users/{id}', 'UserController@show');
     $router->put('users/{id}', 'UserController@update');
     $router->delete('users/{id}', 'UserController@destroy');
 });
