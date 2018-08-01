@@ -1,19 +1,18 @@
 <?php 
 
-namespace App\Common\Resource\Services;
+namespace App\Common;
 
 use App\Common\Resource\Events\ResourceWasCreated;
 use App\Common\Resource\Events\ResourceWasDeleted;
 use App\Common\Resource\Events\ResourceWasUpdated;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container;
 use Illuminate\Events\Dispatcher;
 
 /**
- * Class for Basic CRUD
- * Class ResourceService
+ * Class for Basic CRUD for Model
+ * Class BaseModelResource
  */
-class ResourceService
+class BaseModelResource
 {
     /**
      * @var
@@ -26,27 +25,25 @@ class ResourceService
     private $dispatcher;
 
     /**
+     * @var
+     */
+    private $model;
+
+    /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($model)
     {
         $this->db = app('db');
         $this->dispatcher = new Dispatcher(new Container());
-    }
-
-    /**
-     * @return Model
-     */
-    public function model()
-    {
-        return new Model();
+        $this->model = $model;
     }
 
     /**
      * Creates a new record of data
      *
      * @param $data
-     * @return mixed
+     * @return Mixed
      * @throws Exception
      * @throws \Exception
      */
@@ -55,7 +52,7 @@ class ResourceService
         return $this->db->transaction(function() use($data) {
             try
             {
-                $data = $this->model()->create($data);
+                $data = $this->model->create($data);
                 $this->dispatcher->fire(new ResourceWasCreated($data));
             }
             catch(\Exception $e)
@@ -76,33 +73,33 @@ class ResourceService
      *
      * @param int $perPage
      * @param array $columns
-     * @return mixed
+     * @return Mixed
      */
     public function paginate($perPage, $columns = array('*')) 
     {    
-        return $this->model()->paginate($perPage, $columns);
+        return $this->model->paginate($perPage, $columns);
     }
 
     /**
      * Retrieves all data
      *
      * @param array $columns
-     * @return mixed
+     * @return Mixed
      */
     public function getAll($columns = array('*'))
     {   
-        return $this->model()->all($columns);
+        return $this->model->all($columns);
     }
 
     /**
      * Retrieves a specific data by id
      * 
      * @param $id
-     * @return object
+     * @return Object
      */
     public function getById($id)
     {   
-        return $this->model()->find($id);
+        return $this->model->find($id);
     }
 
     /**
@@ -110,14 +107,14 @@ class ResourceService
      * 
      * @param $id
      * @param $data
-     * @return 
+     * @return Mixed
      */
     public function update($id, $data)
     {   
         return $this->db->transaction(function() use($id, $data) {
             try
             {
-                $data = $this->model()->find($id)->update($data);
+                $data = $this->model->find($id)->update($data);
                 $this->dispatcher->fire(new ResourceWasUpdated($data));
             }
             catch(\Exception $e)
@@ -137,14 +134,14 @@ class ResourceService
      * Deletes a specific data by id
      * 
      * @param $id
-     * @return 
+     * @return Boolean
      */
     public function delete($id)
     {
         return $this->db->transaction(function() use($id) {
             try
             {
-                $data = $this->model()->find($id)->delete();
+                $data = $this->model->find($id)->delete();
                 $this->dispatcher->fire(new ResourceWasDeleted($data));
             }
             catch(\Exception $e)

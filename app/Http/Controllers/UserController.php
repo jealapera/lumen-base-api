@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Common\Resource\Controllers\ResourceController;
-use App\Http\Services\UserService;
 use Illuminate\Http\Request;
 
 /**
@@ -11,32 +11,33 @@ use Illuminate\Http\Request;
  */
 class UserController extends ResourceController
 {
-	/**
-	 * @return UserService
-	 */
-    public function service()
+    /**
+     * @return User
+     */
+    public function model()
     {
-        return new UserService();
+        return new User();
     }
 
     /**
 	 * Creates a new record of user
 	 * 
 	 * @param Request $request
+     * @return 
 	 */
     public function store(Request $request)
     {
     	$requestData = $request->all();
     	
-        if($validator = $this->validateRequest($requestData, $this->service()->model()->rules))
+        if($validator = $this->validateRequest($requestData, $this->model()->rules))
         {   
             return $this->validationError($validator);
         }
         else
         {
-            $requestData['password'] = $this->service()->model()->encryptPassword($requestData['password']);
+            $requestData['password'] = $this->model()->encryptPassword($requestData['password']);
 
-            return $this->success($this->service()->create($requestData));
+            return $this->success($this->resource->create($requestData));
         }
     }
 }
