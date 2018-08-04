@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
+use Illuminate\Validation\ValidationException;
+
 /**
  * Class for Basic CRUD
  * Class ResourceController
  */
 class ResourceController extends BaseController
 {
-	use APIResponse, RequestValidator;
+	use APIResponse;
 
 	/**
      * @var
@@ -23,11 +25,17 @@ class ResourceController extends BaseController
     protected $resource;
 
     /**
+     * @var
+     */
+    protected $validator;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->resource = new BaseModelResource($this->model());
+        $this->validator = app('validator');
     }
 
     /**
@@ -131,4 +139,21 @@ class ResourceController extends BaseController
             return $this->success($this->resource->delete($id));
         }
 	}
+
+    /**
+     * Validates all data from the request
+     * 
+     * @param $data
+     * @param $rules
+     * @return JSON|Mixed
+     */
+    public function validateRequest($data, $rules)
+    {
+        $validator = $this->validator->make($data, $rules);
+        
+        if($validator->fails())
+        {
+            return $validator;
+        }
+    }
 }

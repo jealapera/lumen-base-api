@@ -41,7 +41,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public $rules = [
         'name' => 'required',
         'email' => 'required|email',
-        'password' => 'required|min:8|confirmed' // key: password_confirmation
+        'password' => 'required|min:8|confirmed', // Key for Confirmation: password_confirmation
+        'type' => 'required'
     ];
 
     /**
