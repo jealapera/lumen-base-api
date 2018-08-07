@@ -46,11 +46,45 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
+     * @var
+     */
+    private $hash;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->hash = app('hash');
+    }
+
+    /**
+     * @param $requestPassword
+     * @param $storedPassword
+     * @return string
+     */
+    public function checkPassword($requestPassword, $storedPassword)
+    {
+        return $this->hash->check($requestPassword, $storedPassword);
+    }
+
+    /**
      * @param $password
      * @return string
      */
     public function encryptPassword($password)
     {
-        return app('hash')->make($password);
+        return $this->hash->make($password);
+    }
+
+    /**
+     * Retrieves a specific user by email
+     * 
+     * @param $email
+     * @return Object
+     */
+    public function getByEmail($email)
+    {   
+        return $this->where('email', $email)->first();
     }
 }

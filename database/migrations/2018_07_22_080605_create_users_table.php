@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('type', ['admin', 'user']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

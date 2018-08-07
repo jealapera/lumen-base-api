@@ -18,10 +18,10 @@ trait APIResponse
 	 * @param $data
 	 * @return JSON|Mixed
 	 */
-	protected function notFound($data)
+	protected function notFound($data, $message = null)
 	{
 		$response = [
-			'message' => "Not Found",
+			'message' => ($message) ? $message : "Not Found",
 			'status_code' => 404,
 			'data' => $data
 		];
