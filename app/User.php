@@ -76,15 +76,4 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hash->make($password);
     }
-
-    /**
-     * Retrieves a specific user by email
-     * 
-     * @param $email
-     * @return Object
-     */
-    public function getByEmail($email)
-    {   
-        return $this->where('email', $email)->first();
-    }
 }

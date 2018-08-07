@@ -103,6 +103,18 @@ class BaseModelResource
     }
 
     /**
+     * Retrieves a specific user by attribute
+     * 
+     * @param $attribute
+     * @param $value
+     * @return Object
+     */
+    public function getByAttribute($attribute, $value, $columns = array('*'))
+    {   
+        return $this->model->where($attribute, $value)->first($columns);
+    }
+
+    /**
      * Updates an existing record by id
      * 
      * @param $id

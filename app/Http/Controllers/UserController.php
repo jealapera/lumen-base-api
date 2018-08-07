@@ -28,25 +28,27 @@ class UserController extends ResourceController
      */
     public function authenticate(Request $request) 
     {
-        $this->validateRequest($request->all(), [
-            'email' => 'required',
-            'password' => 'required'
-        ]);
-
-        if($user = $this->model()->getByEmail($request->get('email')))
-        {
-            if($this->model()->checkPassword($request->get('password'), $user->password))
-            {
-                return $this->success($user);
-            }
-            else
-            {
-                return $this->error(new UserException(UserException::INVALID_CREDENTIALS));
-            }
+        if($validator = $this->validateRequest($request->all(), ['email' => 'required|email', 'password' => 'required|min:8']))
+        {   
+            return $this->validationError($validator);
         }
         else
         {
-            return $this->notFound($user, UserException::USER_NOT_FOUND);
+            if($user = $this->resource->getByAttribute('email', $request->get('email')))
+            {
+                if($this->model()->checkPassword($request->get('password'), $user->password))
+                {
+                    return $this->success($user);
+                }
+                else
+                {
+                    return $this->error(new UserException(UserException::INVALID_CREDENTIALS));
+                }
+            }
+            else
+            {
+                return $this->notFound($user, UserException::USER_NOT_FOUND);
+            }
         }
     }
 
