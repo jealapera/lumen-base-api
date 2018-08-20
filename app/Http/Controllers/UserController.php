@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
  * Class UserController
  */
 class UserController extends ResourceController
-{   
+{
     /**
      * @return User
      */

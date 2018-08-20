@@ -26,3 +26,12 @@ $router->group(['prefix' => 'admin'], function() use($router) {
     $router->put('users/{id}', 'UserController@update');
     $router->delete('users/{id}', 'UserController@destroy');
 });
+
+$router->group(['prefix' => 'user'], function() use($router) {
+    // Users
+    $router->post('todos', 'TodoController@store');
+    $router->get('todos', 'TodoController@index');
+    $router->get('todos/{id}', 'TodoController@show');
+    $router->put('todos/{id}', 'TodoController@update');
+    $router->delete('todos/{id}', 'TodoController@destroy');
+});

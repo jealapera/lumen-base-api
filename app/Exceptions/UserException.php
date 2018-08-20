@@ -14,7 +14,7 @@ class UserException extends HttpException
         $statusCode = 422;        
         
         switch($errorType) 
-        {            
+        {
             case self::INVALID_CREDENTIALS:
             case self::USER_NOT_FOUND:
                 $statusCode = 422;

@@ -9,7 +9,7 @@ class SampleException extends HttpException
     const SAMPLE_VAR = 'This is just a sample.';
 
     public function __construct($errorType)
-    {        
+    {
         $statusCode = 422;        
         
         switch($errorType) 
