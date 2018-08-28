@@ -99,7 +99,7 @@ class BaseModelResource
      */
     public function getById($id)
     {   
-        return $this->model->find($id);
+        return $this->model->findOrFail($id);
     }
 
     /**

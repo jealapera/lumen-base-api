@@ -86,14 +86,7 @@ class ResourceController extends BaseController
 	 */
 	public function show($id)
 	{   
-		if(!$data = $this->resource->getById($id))
-        {
-            return $this->notFound($data);
-        }
-        else
-        {
-            return $this->success($data);
-        }
+		return $this->success($this->resource->getById($id));
 	}
 
 	/**
@@ -105,21 +98,17 @@ class ResourceController extends BaseController
 	 */
 	public function update($id, Request $request)
 	{
-		if(!$data = $this->resource->getById($id))
-		{
-			return $this->notFound($data);
-		}
-		else
-		{
-			if($validator = $this->validateRequest($request->all(), $this->model()->rules))
-	        {   
-	            return $this->validationError($validator);
-	        }
-	        else
-	        {
-	            return $this->success($this->resource->update($id, $request->all()));
-	        }
-		}
+		// Find or Fail
+		$this->resource->getById($id);
+
+		if($validator = $this->validateRequest($request->all(), $this->model()->rules))
+        {   
+            return $this->validationError($validator);
+        }
+        else
+        {
+            return $this->success($this->resource->update($id, $request->all()));
+        }
 	}
 
 	/**
@@ -130,14 +119,10 @@ class ResourceController extends BaseController
 	 */
 	public function destroy($id)
 	{
-		if(!$data = $this->resource->getById($id))
-        {
-            return $this->notFound($data);
-        }
-        else
-        {
-            return $this->success($this->resource->delete($id));
-        }
+		// Find or Fail
+		$this->resource->getById($id);
+
+		return $this->success($this->resource->delete($id));
 	}
 
     /**
