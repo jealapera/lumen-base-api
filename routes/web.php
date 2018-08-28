@@ -34,4 +34,6 @@ $router->group(['prefix' => 'user'], function() use($router) {
     $router->get('todos/{id}', 'TodoController@show');
     $router->put('todos/{id}', 'TodoController@update');
     $router->delete('todos/{id}', 'TodoController@destroy');
+
+    $router->get('todos-list/{user_id}', 'TodoController@getAllByUserId');
 });

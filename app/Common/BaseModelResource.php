@@ -92,6 +92,18 @@ class BaseModelResource
     }
 
     /**
+     * Retrieves all data by attribute
+     * 
+     * @param $attribute
+     * @param $value
+     * @return Object
+     */
+    public function getAllByAttribute($attribute, $value, $columns = array('*'))
+    {   
+        return $this->model->where($attribute, $value)->get($columns);
+    }
+
+    /**
      * Retrieves a specific data by id
      * 
      * @param $id
@@ -103,13 +115,13 @@ class BaseModelResource
     }
 
     /**
-     * Retrieves a specific user by attribute
+     * Retrieves a specific data by attribute
      * 
      * @param $attribute
      * @param $value
      * @return Object
      */
-    public function getByAttribute($attribute, $value, $columns = array('*'))
+    public function getByFirstAttribute($attribute, $value, $columns = array('*'))
     {   
         return $this->model->where($attribute, $value)->first($columns);
     }

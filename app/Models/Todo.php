@@ -38,4 +38,18 @@ class Todo extends Model
         'description' => '', 
         'status' => ''
     ];
+
+    /**
+     * Retrieves all todos by user id
+     * 
+     * @param $userId
+     * @return JSON|Mixed
+     */
+    public function getAllByUserId($userId)
+    {
+        return $this->select('todos.id', 'users.id AS user_id', 'users.name AS username', 'todos.title')
+                    ->join('users', 'todos.user_id', '=', 'users.id')
+                    ->where('todos.user_id', $userId)
+                    ->get();
+    }
 }

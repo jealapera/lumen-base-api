@@ -17,4 +17,15 @@ class TodoController extends ResourceController
     {
         return new Todo();
     }
+
+    /**
+     * Retrieves all todos by user id
+     * 
+     * @param $userId
+     * @return JSON|Mixed
+     */
+    public function getAllByUserId($userId)
+    {
+    	return $this->success($this->model()->getAllByUserId($userId));
+    }
 }
