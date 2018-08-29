@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use App\Common\Resource\Controllers\ResourceController;
 use App\Exceptions\UserException;
 use Illuminate\Http\Request;
