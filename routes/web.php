@@ -22,18 +22,18 @@ $router->group(['prefix' => 'admin'], function() use($router) {
     // Users
     $router->post('users', 'UserController@store');
     $router->get('users', 'UserController@index');
-    $router->get('users/{id}', 'UserController@show');
-    $router->put('users/{id}', 'UserController@update');
-    $router->delete('users/{id}', 'UserController@destroy');
+    $router->get('user/{id}', 'UserController@show');
+    $router->put('user/{id}', 'UserController@update');
+    $router->delete('user/{id}', 'UserController@destroy');
 });
 
 $router->group(['prefix' => 'user'], function() use($router) {
     // Users
     $router->post('todos', 'TodoController@store');
     $router->get('todos', 'TodoController@index');
-    $router->get('todos/{id}', 'TodoController@show');
-    $router->put('todos/{id}', 'TodoController@update');
-    $router->delete('todos/{id}', 'TodoController@destroy');
+    $router->get('todo/{id}', 'TodoController@show');
+    $router->put('todo/{id}', 'TodoController@update');
+    $router->delete('todo/{id}', 'TodoController@destroy');
 
     $router->get('todos-list/{user_id}', 'TodoController@getAllByUserId');
 });

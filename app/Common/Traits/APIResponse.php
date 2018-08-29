@@ -16,7 +16,7 @@ trait APIResponse
 
 	/**
 	 * @param $data
-	 * @return JSON|Mixed
+	 * @return JSON Response
 	 */
 	protected function notFound($data, $message = null)
 	{
@@ -31,7 +31,7 @@ trait APIResponse
 
 	/**
 	 * @param $data
-	 * @return JSON|Mixed
+	 * @return JSON Response
 	 */
 	protected function success($data)
 	{
@@ -46,7 +46,7 @@ trait APIResponse
 
 	/**
 	 * @param $validator
-	 * @return JSON|Mixed
+	 * @return JSON Response
 	 */
 	protected function validationError($validator)
 	{

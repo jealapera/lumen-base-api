@@ -9,7 +9,7 @@ use Illuminate\Container\Container;
 use Illuminate\Events\Dispatcher;
 
 /**
- * Class for Basic CRUD for Model
+ * Class for Basic CRUD using Eloquent ORM (Object-relational Mapping)
  * Class BaseModelResource
  */
 class BaseModelResource
@@ -43,9 +43,7 @@ class BaseModelResource
      * Creates a new record of data
      *
      * @param $data
-     * @return Mixed
-     * @throws Exception
-     * @throws \Exception
+     * @return object(Model)
      */
     public function create($data)
     {
@@ -72,8 +70,8 @@ class BaseModelResource
      * Retrieves all data with pagination
      *
      * @param int $perPage
-     * @param array $columns
-     * @return Mixed
+     * @param $columns = array('*')
+     * @return object(Illuminate\Pagination\LengthAwarePaginator)
      */
     public function paginate($perPage, $columns = array('*')) 
     {    
@@ -83,8 +81,8 @@ class BaseModelResource
     /**
      * Retrieves all data
      *
-     * @param array $columns
-     * @return Mixed
+     * @param $columns = array('*')
+     * @return object(Illuminate\Database\Eloquent\Collection)
      */
     public function getAll($columns = array('*'))
     {   
@@ -96,7 +94,8 @@ class BaseModelResource
      * 
      * @param $attribute
      * @param $value
-     * @return Object
+     * @param $columns = array('*')
+     * @return object(Illuminate\Database\Eloquent\Collection)
      */
     public function getAllByAttribute($attribute, $value, $columns = array('*'))
     {   
@@ -107,7 +106,8 @@ class BaseModelResource
      * Retrieves a specific data by id
      * 
      * @param $id
-     * @return Object
+     * @return object(Model)
+     * @throws Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getById($id)
     {   
@@ -119,19 +119,21 @@ class BaseModelResource
      * 
      * @param $attribute
      * @param $value
-     * @return Object
+     * @param $columns = array('*')
+     * @return object(Model)
      */
-    public function getByFirstAttribute($attribute, $value, $columns = array('*'))
+    public function getByAttribute($attribute, $value, $columns = array('*'))
     {   
         return $this->model->where($attribute, $value)->first($columns);
     }
 
     /**
-     * Updates an existing record by id
+     * Updates an existing record of data by id
      * 
      * @param $id
      * @param $data
-     * @return Mixed
+     * @return object(Model)
+     * @throws Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function update($id, $data)
     {   
@@ -158,7 +160,7 @@ class BaseModelResource
      * Deletes a specific data by id
      * 
      * @param $id
-     * @return Boolean
+     * @return boolean
      */
     public function delete($id)
     {

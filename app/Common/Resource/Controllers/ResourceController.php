@@ -4,7 +4,6 @@ namespace App\Common\Resource\Controllers;
 
 use App\Common\BaseModelResource;
 use App\Common\Traits\APIResponse;
-use App\Common\Traits\RequestValidator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
@@ -50,7 +49,7 @@ class ResourceController extends BaseController
 	 * Creates a new record of data
 	 * 
 	 * @param Request $request
-	 * @return JSON|Mixed
+	 * @return Newly created record of data as a JSON response
 	 */
 	public function store(Request $request)
 	{
@@ -68,7 +67,7 @@ class ResourceController extends BaseController
 	 * Retrieves all data [With Pagination]
 	 * 
 	 * @param Request $request
-	 * @return JSON|Mixed
+	 * @return Array of data in JSON response
 	 */
 	public function index(Request $request)
 	{
@@ -82,7 +81,8 @@ class ResourceController extends BaseController
 	 * Retrieves a specific data by id
 	 * 
 	 * @param $id
-	 * @return JSON|Mixed
+	 * @return Object in JSON response
+	 * @throws Illuminate\Database\Eloquent\ModelNotFoundException
 	 */
 	public function show($id)
 	{   
@@ -90,15 +90,16 @@ class ResourceController extends BaseController
 	}
 
 	/**
-	 * Updates an existing record by id
+	 * Updates an existing record of data by id
 	 * 
 	 * @param $id
 	 * @param Request $request
-	 * @return JSON|Mixed
+	 * @return Updated record of data as a JSON response
+	 * @throws Illuminate\Database\Eloquent\ModelNotFoundException
 	 */
 	public function update($id, Request $request)
 	{
-		// Find or Fail
+		// Retrieves the first result of the query; however, if no result is found, an exception will be thrown.
 		$this->resource->getById($id);
 
 		if($validator = $this->validateRequest($request->all(), $this->model()->rules))
@@ -119,7 +120,7 @@ class ResourceController extends BaseController
 	 */
 	public function destroy($id)
 	{
-		// Find or Fail
+		// Retrieves the first result of the query; however, if no result is found, an exception will be thrown.
 		$this->resource->getById($id);
 
 		return $this->success($this->resource->delete($id));
