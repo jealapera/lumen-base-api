@@ -40,8 +40,10 @@ class CSVDocument implements Document
         if($csvData && is_array($csvData))
         {
             $result = array();
+            
             // Get the header
             $header = $csvData[0];
+
             // Loop starting on the first index since record start in the index 1
             for($i = 1; $i < count($csvData); $i++)
             {
