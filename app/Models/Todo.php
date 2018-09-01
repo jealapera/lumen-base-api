@@ -50,18 +50,15 @@ class Todo extends Model
     }
 
     /**
-     * Retrieves all todos by user id
+     * Retrieves all todos with user
      * 
-     * @param $userId
-     * @return JSON|Mixed
+     * @return object(Illuminate\Support\Collection)
      */
-    public function getAllByUserId($userId)
+    public function getAllTodosWithUser()
     {
         return collect($this->select('id', 'user_id', 'title', 'description', 'created_at', 'updated_at')
                     ->with(array('user' => function($query) {
                         $query->select('id', 'name', 'email');
-                    }))
-                    ->where('user_id', '=', $userId)
-                    ->get());
+                    }))->get());
     }
 }

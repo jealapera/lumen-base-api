@@ -15,7 +15,6 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-
 // $router->post('/login', 'AuthController@login');
 // $router->get('/logout', 'AuthController@logout');
 
@@ -28,6 +27,8 @@ $router->group(['prefix' => 'admin'], function() use($router) {
     $router->delete('user/{id}', 'UserController@destroy');
 });
 
+$router->get('user/{id}/todos-list', 'UserController@getUserTodosList');
+
 $router->group(['prefix' => 'user'], function() use($router) {
     // Users
     $router->post('todos', 'TodoController@store');
@@ -35,6 +36,6 @@ $router->group(['prefix' => 'user'], function() use($router) {
     $router->get('todo/{id}', 'TodoController@show');
     $router->put('todo/{id}', 'TodoController@update');
     $router->delete('todo/{id}', 'TodoController@destroy');
-
-    $router->get('{user_id}/todos-list', 'TodoController@getAllByUserId');
 });
+
+$router->get('users/todos-list', 'TodoController@getAllTodosWithUser');

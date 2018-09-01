@@ -71,4 +71,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany('App\Models\Todo');
     }
+
+    /**
+     * Retrieves all todos by id of the user
+     * 
+     * @param $id
+     * @return object(Illuminate\Database\Eloquent\Collection)
+     */
+    public function getUserTodosList($id)
+    {
+        return $this->find($id)->todos;
+    }
 }
