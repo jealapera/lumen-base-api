@@ -32,8 +32,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = [
         'password',
-        'created_at',
-        'updated_at',
+        // 'created_at',
+        // 'updated_at',
         'deleted_at'
     ];
 
@@ -55,29 +55,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     private $hash;
 
     /**
-     * Constructor
+     * Password Mutator
      */
-    public function __construct()
+    public function setPasswordAttribute($value)
     {
-        $this->hash = app('hash');
-    }
-
-    /**
-     * @param $requestPassword
-     * @param $storedPassword
-     * @return string
-     */
-    public function checkPassword($requestPassword, $storedPassword)
-    {
-        return $this->hash->check($requestPassword, $storedPassword);
-    }
-
-    /**
-     * @param $password
-     * @return string
-     */
-    public function encryptPassword($password)
-    {
-        return $this->hash->make($password);
+        $this->attributes['password'] = app('hash')->make($value);
     }
 }

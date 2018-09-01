@@ -47,7 +47,13 @@ class Todo extends Model
      */
     public function getAllByUserId($userId)
     {
-        return $this->select('todos.id', 'users.id AS user_id', 'users.name AS username', 'todos.title')
+        return $this->select('todos.id', 
+                        'users.id AS user_id', 
+                        'users.name AS username', 
+                        'todos.title',
+                        'todos.description',
+                        'todos.created_at',
+                        'todos.updated_at')
                     ->join('users', 'todos.user_id', '=', 'users.id')
                     ->where('todos.user_id', $userId)
                     ->get();

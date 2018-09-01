@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Common\Resource\Controllers;
+namespace App\Common\Resource;
 
 use App\Common\BaseModelResource;
 use App\Common\Traits\APIResponse;

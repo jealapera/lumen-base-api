@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use App\Common\Resource\Controllers\ResourceController;
+use App\Common\Resource\ResourceController;
 
 /**
  * Class UserController

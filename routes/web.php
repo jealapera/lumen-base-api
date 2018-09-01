@@ -15,9 +15,6 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-
-$router->post('login', 'UserController@authenticate');
-
 $router->group(['prefix' => 'admin'], function() use($router) {
     // Users
     $router->post('users', 'UserController@store');
