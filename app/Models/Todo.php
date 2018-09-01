@@ -40,6 +40,16 @@ class Todo extends Model
     ];
 
     /**
+     * Todo belongs to one and only one User
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    /**
      * Retrieves all todos by user id
      * 
      * @param $userId
@@ -47,15 +57,11 @@ class Todo extends Model
      */
     public function getAllByUserId($userId)
     {
-        return $this->select('todos.id', 
-                        'users.id AS user_id', 
-                        'users.name AS username', 
-                        'todos.title',
-                        'todos.description',
-                        'todos.created_at',
-                        'todos.updated_at')
-                    ->join('users', 'todos.user_id', '=', 'users.id')
-                    ->where('todos.user_id', $userId)
-                    ->get();
+        return collect($this->select('id', 'user_id', 'title', 'description', 'created_at', 'updated_at')
+                    ->with(array('user' => function($query) {
+                        $query->select('id', 'name', 'email');
+                    }))
+                    ->where('user_id', '=', $userId)
+                    ->get());
     }
 }

@@ -61,4 +61,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $this->attributes['password'] = app('hash')->make($value);
     }
+
+    /**
+     * User has one or more todos
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function todos()
+    {
+        return $this->hasMany('App\Models\Todo');
+    }
 }
