@@ -116,7 +116,7 @@ class ResourceController extends BaseController
 	 * Deletes a specific data by id
 	 * 
 	 * @param $id
-	 * @return JSON|Mixed
+	 * @return JSON Response
 	 */
 	public function destroy($id)
 	{
@@ -131,7 +131,7 @@ class ResourceController extends BaseController
      * 
      * @param $data
      * @param $rules
-     * @return JSON|Mixed
+     * @return JSON Response
      */
     public function validateRequest($data, $rules)
     {

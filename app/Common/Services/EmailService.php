@@ -9,5 +9,11 @@ use Illuminate\Support\Facades\Mail;
  */
 class EmailService
 {
-    // Sending email goes here...
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    	//
+    }
 }
