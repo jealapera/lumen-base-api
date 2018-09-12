@@ -90,7 +90,7 @@ class BaseModelResource
     }
 
     /**
-     * Retrieves all data by attribute
+     * Retrieves all data by a specific attribute (Table Column)
      * 
      * @param $attribute
      * @param $value
@@ -110,7 +110,7 @@ class BaseModelResource
      * @throws Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getById($id)
-    {   
+    {
         return $this->model->findOrFail($id);
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Todo;
 use App\Common\Resource\ResourceController;
+use App\Models\Todo;
 
 /**
  * Class UserController

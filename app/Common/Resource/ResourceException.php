@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Common\Resource;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class SampleException extends HttpException
+class ResourceException extends HttpException
 {
-    const SAMPLE_VAR = 'This is just a sample error message.';
+    const CREATE_ERROR = 'Failed to Create';
+    const UPDATE_ERROR = 'Failed to Update';
 
     public function __construct($errorType)
     {
@@ -14,7 +15,8 @@ class SampleException extends HttpException
         
         switch($errorType) 
         {            
-            case self::SAMPLE_VAR:
+            case self::CREATE_ERROR:
+            case self::UPDATE_ERROR:
                 $statusCode = 422;
                 break;
         }

@@ -5,17 +5,25 @@ namespace App\Common\Traits;
 trait APIResponse 
 {
 	/**
-     * @param $exception
-     * @throws Exception
+     * @param Exception $exception
+     * @return JSON Response
      */
     protected function error($exception)
     {
         if($exception)
-            throw $exception;
+        {
+            $response = [
+				'message' => $exception->getMessage(),
+				'status_code' => $exception->getStatusCode()
+			];
+        }
+
+        return response()->json(['error' => $response]);
     }
 
 	/**
 	 * @param $data
+	 * @param $message = null
 	 * @return JSON Response
 	 */
 	protected function notFound($data, $message = null)

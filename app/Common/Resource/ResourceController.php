@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
-use Illuminate\Validation\ValidationException;
-
 /**
  * Class for Basic CRUD
  * Class ResourceController
@@ -49,17 +47,31 @@ class ResourceController extends BaseController
 	 * Creates a new record of data
 	 * 
 	 * @param Request $request
-	 * @return Newly created record of data as a JSON response
+	 * @return Newly created record of data in JSON response
+	 * @throws object(Illuminate\Database\QueryException)
 	 */
 	public function store(Request $request)
 	{
 		if($validator = $this->validateRequest($request->all(), $this->model()->rules))
-        {   
+        {
             return $this->validationError($validator);
         }
         else
         {
-            return $this->success($this->resource->create($request->all()));
+            $create = $this->resource->create($request->all());
+
+            if($errorInfo = $create->errorInfo)
+            {
+            	$response =  $this->error(new ResourceException(ResourceException::CREATE_ERROR));
+            	$response = $response->original;
+            	$response['error_info'] = $errorInfo;
+            }
+            else
+            {
+            	$response = $this->success($create);
+            }
+
+            return $response;
         }
 	}
 
@@ -78,14 +90,14 @@ class ResourceController extends BaseController
 	}
 
 	/**
-	 * Retrieves a specific data by id
+	 * Retrieves a specific data by id; However, if no result is found, an exception will be thrown.
 	 * 
 	 * @param $id
 	 * @return Object in JSON response
 	 * @throws Illuminate\Database\Eloquent\ModelNotFoundException
 	 */
 	public function show($id)
-	{   
+	{
 		return $this->success($this->resource->getById($id));
 	}
 
@@ -94,12 +106,12 @@ class ResourceController extends BaseController
 	 * 
 	 * @param $id
 	 * @param Request $request
-	 * @return Updated record of data as a JSON response
+	 * @return Updated existing record of data in JSON response
 	 * @throws Illuminate\Database\Eloquent\ModelNotFoundException
 	 */
 	public function update($id, Request $request)
 	{
-		// Retrieves the first result of the query; however, if no result is found, an exception will be thrown.
+		// Retrieves the first result of the query; However, if no result is found, an exception will be thrown.
 		$this->resource->getById($id);
 
 		if($validator = $this->validateRequest($request->all(), $this->model()->rules))
@@ -108,19 +120,33 @@ class ResourceController extends BaseController
         }
         else
         {
-            return $this->success($this->resource->update($id, $request->all()));
+            $update = $this->resource->update($id, $request->all());
+
+            if($errorInfo = $update->errorInfo)
+            {
+            	$response =  $this->error(new ResourceException(ResourceException::UPDATE_ERROR));
+            	$response = $response->original;
+            	$response['error_info'] = $errorInfo;
+            }
+            else
+            {
+            	$response = $this->success($update);
+            }
+
+            return $response;
         }
 	}
 
 	/**
-	 * Deletes a specific data by id
+	 * Deletes a specific data by id; However, if no result is found, an exception will be thrown.
 	 * 
 	 * @param $id
-	 * @return JSON Response
+	 * @return Boolean in JSON Response
+	 * @throws Illuminate\Database\Eloquent\ModelNotFoundException
 	 */
 	public function destroy($id)
 	{
-		// Retrieves the first result of the query; however, if no result is found, an exception will be thrown.
+		// Retrieves the first result of the query; However, if no result is found, an exception will be thrown.
 		$this->resource->getById($id);
 
 		return $this->success($this->resource->delete($id));
@@ -131,7 +157,7 @@ class ResourceController extends BaseController
      * 
      * @param $data
      * @param $rules
-     * @return JSON Response
+     * @return object(Illuminate\Validation\Validator)
      */
     public function validateRequest($data, $rules)
     {
