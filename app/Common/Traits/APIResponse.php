@@ -44,7 +44,7 @@ trait APIResponse
 	protected function success($data)
 	{
 		$response = [
-			'message' => 'Success',
+			'message' => "Success",
 			'status_code' => 200,
 			'data' => $data
 		];

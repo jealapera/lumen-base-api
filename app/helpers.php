@@ -1,4 +1,4 @@
-<?php // Helpers
+<?php // helpers
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
