@@ -15,27 +15,30 @@ $router->get('/', function() use ($router) {
     return $router->app->version();
 });
 
-// $router->post('/login', 'AuthController@login');
-// $router->get('/logout', 'AuthController@logout');
+$router->post('/login', 'AuthController@authenticate');
+$router->get('/logout', 'AuthController@logout');
 
-$router->group(['prefix' => 'admin'], function() use($router) {
-    // Users
-    $router->post('users', 'UserController@store');
-    $router->get('users', 'UserController@index');
-    $router->get('user/{id}', 'UserController@show');
-    $router->put('user/{id}', 'UserController@update');
-    $router->delete('user/{id}', 'UserController@destroy');
+$router->group(['middleware' => 'jwt.auth'], function() use ($router) {
+    // Admin
+    $router->group(['prefix' => 'admin'], function() use($router) {
+        // Users
+        $router->post('users', 'UserController@store');
+        $router->get('users', 'UserController@index');
+        $router->get('user/{id}', 'UserController@show');
+        $router->put('user/{id}', 'UserController@update');
+        $router->delete('user/{id}', 'UserController@destroy');
+    });   
+
+    $router->get('user/{id}/todos-list', 'UserController@getUserTodosList');
+
+    // User
+    $router->group(['prefix' => 'user'], function() use($router) {
+        $router->post('todos', 'TodoController@store');
+        $router->get('todos', 'TodoController@index');
+        $router->get('todo/{id}', 'TodoController@show');
+        $router->put('todo/{id}', 'TodoController@update');
+        $router->delete('todo/{id}', 'TodoController@destroy');
+    });
+
+    $router->get('users/todos-list', 'TodoController@getAllTodosWithUser');
 });
-
-$router->get('user/{id}/todos-list', 'UserController@getUserTodosList');
-
-$router->group(['prefix' => 'user'], function() use($router) {
-    // Users
-    $router->post('todos', 'TodoController@store');
-    $router->get('todos', 'TodoController@index');
-    $router->get('todo/{id}', 'TodoController@show');
-    $router->put('todo/{id}', 'TodoController@update');
-    $router->delete('todo/{id}', 'TodoController@destroy');
-});
-
-$router->get('users/todos-list', 'TodoController@getAllTodosWithUser');

@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name', 64);
             $table->string('email', 64)->unique();
-            $table->string('password', 16);
+            $table->string('password', 64);
             $table->enum('type', ['admin', 'user']);
             $table->timestamps();
             $table->softDeletes();
