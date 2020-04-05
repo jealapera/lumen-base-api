@@ -11,34 +11,35 @@
 |
 */
 
-$router->get('/', function() use ($router) {
+$router->get('/', function() use($router) {
     return $router->app->version();
 });
 
-$router->post('/login', 'AuthController@authenticate');
-$router->get('/logout', 'AuthController@logout');
+$router->get('generate_key', function() {
+    return str_random(32);
+});
 
-$router->group(['middleware' => 'jwt.auth'], function() use ($router) {
-    // Admin
-    $router->group(['prefix' => 'admin'], function() use($router) {
-        // Users
-        $router->post('users', 'UserController@store');
-        $router->get('users', 'UserController@index');
-        $router->get('user/{id}', 'UserController@show');
-        $router->put('user/{id}', 'UserController@update');
-        $router->delete('user/{id}', 'UserController@destroy');
-    });   
 
-    $router->get('user/{id}/todos-list', 'UserController@getUserTodosList');
+$router->group(['prefix' => 'api'], function() use($router) {
+    // Register
+    $router->post('register', 'UserController@store');
+    
+    // $router->post('/login', 'AuthController@authenticate');
+    // $router->get('/logout', 'AuthController@logout');
 
-    // User
-    $router->group(['prefix' => 'user'], function() use($router) {
-        $router->post('todos', 'TodoController@store');
+    // $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
+        // Admin
+        $router->group(['prefix' => 'admin'], function() use($router) {
+            // Endpoints intended for the Admin-User-Access" goes here. (Only if necessary)
+        }); 
+
         $router->get('todos', 'TodoController@index');
+        $router->post('todos', 'TodoController@store');
         $router->get('todo/{id}', 'TodoController@show');
         $router->put('todo/{id}', 'TodoController@update');
         $router->delete('todo/{id}', 'TodoController@destroy');
-    });
 
-    $router->get('users/todos-list', 'TodoController@getAllTodosWithUser');
+        // Gets all todos with user (Can also override @index method on TodoController)
+        $router->get('user-todos', 'TodoController@getAllTodosWithUser');
+    // });
 });

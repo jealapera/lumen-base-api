@@ -1,4 +1,6 @@
-<?php namespace App\Common\Services;
+<?php 
+
+namespace App\Common\Services;
 
 use File;
 

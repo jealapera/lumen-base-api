@@ -2,12 +2,6 @@
 
 namespace App\Common;
 
-use App\Common\Resource\Events\ResourceWasCreated;
-use App\Common\Resource\Events\ResourceWasDeleted;
-use App\Common\Resource\Events\ResourceWasUpdated;
-use Illuminate\Container\Container;
-use Illuminate\Events\Dispatcher;
-
 /**
  * Class for Basic CRUD using Eloquent ORM (Object-relational Mapping)
  * Class BaseModelResource
@@ -22,11 +16,6 @@ class BaseModelResource
     /**
      * @var
      */
-    private $dispatcher;
-
-    /**
-     * @var
-     */
     private $model;
 
     /**
@@ -35,7 +24,6 @@ class BaseModelResource
     public function __construct($model)
     {
         $this->db = app('db');
-        $this->dispatcher = new Dispatcher(new Container());
         $this->model = $model;
     }
 
@@ -48,18 +36,12 @@ class BaseModelResource
     public function create($data)
     {
         return $this->db->transaction(function() use($data) {
-            try
-            {
+            try {
                 $data = $this->model->create($data);
-                $this->dispatcher->fire(new ResourceWasCreated($data));
-            }
-            catch(\Exception $e)
-            {
+            } catch(\Exception $e) {
                 $this->db->rollback();
-
                 return $e;
             }
-
             $this->db->commit();
 
             return $data;
@@ -138,18 +120,12 @@ class BaseModelResource
     public function update($id, $data)
     {   
         return $this->db->transaction(function() use($id, $data) {
-            try
-            {
+            try {
                 $data = $this->model->find($id)->update($data);
-                $this->dispatcher->fire(new ResourceWasUpdated($data));
-            }
-            catch(\Exception $e)
-            {
+            } catch(\Exception $e) {
                 $this->db->rollback();
-
                 return $e;
             }
-
             $this->db->commit();
 
             return $this->getById($id);
@@ -165,18 +141,12 @@ class BaseModelResource
     public function delete($id)
     {
         return $this->db->transaction(function() use($id) {
-            try
-            {
+            try {
                 $data = $this->model->find($id)->delete();
-                $this->dispatcher->fire(new ResourceWasDeleted($data));
-            }
-            catch(\Exception $e)
-            {
+            } catch(\Exception $e) {
                 $this->db->rollback();
-                
                 return $e;
             }
-
             $this->db->commit();
 
             return $data;

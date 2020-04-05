@@ -59,7 +59,6 @@ class ResourceController extends BaseController
         else
         {
             $create = $this->resource->create($request->all());
-
             if($errorInfo = $create->errorInfo)
             {
             	$response =  $this->error(new ResourceException(ResourceException::CREATE_ERROR));
@@ -70,7 +69,7 @@ class ResourceController extends BaseController
             {
             	$response = $this->success($create);
             }
-
+            
             return $response;
         }
 	}

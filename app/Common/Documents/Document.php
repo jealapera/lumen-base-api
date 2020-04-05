@@ -1,4 +1,6 @@
-<?php namespace App\Common\Documents;
+<?php 
+
+namespace App\Common\Documents;
 
 interface Document 
 {
