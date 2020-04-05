@@ -2,10 +2,13 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-try {
+try 
+{
    $dotenv = Dotenv\Dotenv::create(dirname(__DIR__));
    $dotenv->load();
-} catch(Dotenv\Exception\InvalidPathException $e){
+} 
+catch(Dotenv\Exception\InvalidPathException $e)
+{
    $e->getMessage();
 }
 

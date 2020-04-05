@@ -36,12 +36,16 @@ class BaseModelResource
     public function create($data)
     {
         return $this->db->transaction(function() use($data) {
-            try {
+            try 
+            {
                 $data = $this->model->create($data);
-            } catch(\Exception $e) {
+            } 
+            catch(\Exception $e) 
+            {
                 $this->db->rollback();
                 return $e;
             }
+
             $this->db->commit();
 
             return $data;
@@ -120,12 +124,16 @@ class BaseModelResource
     public function update($id, $data)
     {   
         return $this->db->transaction(function() use($id, $data) {
-            try {
+            try 
+            {
                 $data = $this->model->find($id)->update($data);
-            } catch(\Exception $e) {
+            } 
+            catch(\Exception $e) 
+            {
                 $this->db->rollback();
                 return $e;
             }
+
             $this->db->commit();
 
             return $this->getById($id);
@@ -141,12 +149,16 @@ class BaseModelResource
     public function delete($id)
     {
         return $this->db->transaction(function() use($id) {
-            try {
+            try 
+            {
                 $data = $this->model->find($id)->delete();
-            } catch(\Exception $e) {
+            } 
+            catch(\Exception $e) 
+            {
                 $this->db->rollback();
                 return $e;
             }
+            
             $this->db->commit();
 
             return $data;

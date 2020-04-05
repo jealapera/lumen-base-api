@@ -24,10 +24,10 @@ $router->group(['prefix' => 'api'], function() use($router) {
     // Register
     $router->post('register', 'UserController@store');
     
-    // $router->post('/login', 'AuthController@authenticate');
+    $router->post('/login', 'AuthController@authenticate');
     // $router->get('/logout', 'AuthController@logout');
 
-    // $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
+    $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
         // Admin
         $router->group(['prefix' => 'admin'], function() use($router) {
             // Endpoints intended for the Admin-User-Access" goes here. (Only if necessary)
@@ -41,5 +41,5 @@ $router->group(['prefix' => 'api'], function() use($router) {
 
         // Gets all todos with user (Can also override @index method on TodoController)
         $router->get('user-todos', 'TodoController@getAllTodosWithUser');
-    // });
+    });
 });
