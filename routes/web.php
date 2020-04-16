@@ -15,11 +15,12 @@ $router->get('/', function() use($router) {
     return $router->app->version();
 });
 
-$router->get('generate_key', function() {
-    return str_random(32);
+// For generating key to set your own APP_KEY and JWT_SECRET on your .env file
+$router->get('generate-key', function() {
+    return response()->json(['key' => \Illuminate\Support\Str::random(32)], 200);
 });
 
-
+// Your APIs goes here...
 $router->group(['prefix' => 'api'], function() use($router) {
     // Register
     $router->post('register', 'UserController@store');
